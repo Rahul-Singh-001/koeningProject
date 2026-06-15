@@ -1,0 +1,68 @@
+html,body,#root{
+    margin: 0;
+    padding:0;
+    height: 100%;
+    width:100%
+}
+.credentials-page{
+
+    height:100vh;
+    width:100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 20px;
+    background:linear-gradient(135deg,#4f46e5,#7c3aed);
+}
+.credentials-page form{
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    width:350px;
+    padding:35px;
+    background:rgba(255,255,255,0.95);
+    border-radius:20px;
+    box-shadow:0 10px 30px rgba(0,0,0,0.2);
+}
+.credentials-page h1{
+    color:white;
+    margin-bottom:25px;
+    font-size:3rem;
+    font-family:sans-serif;
+    letter-spacing:1px;
+}
+.credentials-page input{
+   border:none;
+    outline:none;
+     width: 85%;
+    border-bottom:2px solid #6366f1;
+    padding:12px;
+    font-size:16px;
+    background:transparent;
+}
+.credentials-page input:focus{
+    border-bottom-color:#7c3aed;
+}
+.credentials-page form button{
+   background:linear-gradient(135deg,#16a34a,#22c55e);
+    color:white;
+    border:none;
+    border-radius:12px;
+    width: 85%;
+    padding:12px;
+    font-size:16px;
+    font-weight:600;
+    cursor:pointer;
+    transition:all .3s ease;
+    
+}
+.credentials-page button:hover{
+    transform:translateY(-3px);
+    box-shadow:0 8px 20px rgba(34,197,94,.4);
+}
+.subtitle{
+    color:white;
+    margin-top:-15px;
+    margin-bottom:20px;
+}
