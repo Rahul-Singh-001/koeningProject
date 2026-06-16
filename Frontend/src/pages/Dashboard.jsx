@@ -1,9 +1,19 @@
-import React from 'react'
+import UserList from "../components/UserList";
+import TaskForm from "../components/TaskForm";
+import TaskList from "../components/TaskList";
 
-const Dashboard = () => {
+function Dashboard() {
   return (
-    <div>Dashboard</div>
-  )
+    <>
+      <h1>Campus Connect Dashboard</h1>
+
+      <TaskForm />
+
+      <TaskList />
+
+      <UserList />
+    </>
+  );
 }
 
-export default Dashboard
+export default Dashboard;

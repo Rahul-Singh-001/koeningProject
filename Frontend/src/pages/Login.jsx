@@ -69,7 +69,7 @@ const Login = () => {
         {error.email && (
           <p style={{ color: "red" }}>{error.email}</p>
         )}
-
+        <br />
         <input
           type="password"
           name="password"
@@ -81,16 +81,18 @@ const Login = () => {
         {error.password && (
           <p style={{ color: "red" }}>{error.password}</p>
         )}
+        <br />
 
         <button type="submit">
           Login
         </button>
-      </form>
-
-      <p className="register-link">
+        <p className="register-link">
         Don't have an account?{" "}
         <Link to="/register">Register</Link>
       </p>
+      </form>
+
+      
     </div>
   );
 };

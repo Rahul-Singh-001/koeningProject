@@ -1,60 +1,68 @@
-import React, { useState } from 'react'
-import {useNavigate} from 'react-router-dom'
-const Login = () => {
-    const [formData,setFormData]=useState({email:'',password:''})
-    const[error,setError]=useState({})
-    const navigate=useNavigate();
-    const submitHandler=(event)=>{
-        event.preventDefault()
-         const validErrors=validations()
-    if(Object.keys(validErrors).length>0)
-    {
-        setError(validErrors)
-    }
-    else
-    {
-        alert("Login Successfull")
-        navigate('/Home');
-    }
-   }
-   const validations=()=>{
-    const errorMessage={}
-    if(!formData.email.trim())
-    {
-        errorMessage.email="Email is required please fill it!!"
-    }
-    if(!formData.password.trim())
-    {
-        errorMessage.password="Password is required please fill it!!"
-    }
-    return errorMessage;
-   }
+import { useState } from "react";
+import axios from "../api/api";
+import { useNavigate } from "react-router-dom";
 
-    const changeHandler=(event)=>{
-          const {name,value}=event.target ;
-          setFormData({...formData,[name]:value})
+function Register() {
+  const navigate = useNavigate();
+
+  const [formData, setFormData] = useState({
+    name: "",
+    email: "",
+    password: "",
+  });
+
+  const submitHandler = async (e) => {
+    e.preventDefault();
+
+    try {
+      await axios.post("/users", formData);
+
+      alert("Registration Successful");
+
+      navigate("/");
+    } catch (err) {
+      alert(err.response?.data?.message);
     }
+  };
 
   return (
-      <div className='credentials-page'>
+    <form onSubmit={submitHandler}>
+      <input
+        type="text"
+        placeholder="Name"
+        onChange={(e) =>
+          setFormData({
+            ...formData,
+            name: e.target.value,
+          })
+        }
+      />
 
-         <h1>Register</h1>
-         <form onSubmit={submitHandler}>
-            <input type='email' name='email' placeholder='Enter registered email...'
-            value={formData.email} onChange={changeHandler}/>
-            {error.email && <p style={{color:"red"}}>{error.email}</p>}
-        <br />
+      <input
+        type="email"
+        placeholder="Email"
+        onChange={(e) =>
+          setFormData({
+            ...formData,
+            email: e.target.value,
+          })
+        }
+      />
 
-            <input type='password' name='password' placeholder='Enter password...'
-                value={formData.password}
-                onChange={changeHandler}
-            />
-            {error.password && <p style={{color:"red"}}>{error.password}</p>}
-        <br />
-             <button type="submit">Login</button>
-         </form>
-      </div>
-  )
+      <input
+        type="password"
+        placeholder="Password"
+        onChange={(e) =>
+          setFormData({
+            ...formData,
+            password: e.target.value,
+          })
+        }
+      />
+
+      <button>Register</button>
+    </form>
+  );
 }
 
-export default Login
+export default Register;
