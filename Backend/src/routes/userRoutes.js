@@ -2,6 +2,8 @@ const express = require("express");
 
 const router = express.Router();
 
+const authMiddleware = require("../middleware/auth.middleware");
+
 const {
   createUser,
   getUsers,
@@ -9,12 +11,14 @@ const {
   deleteUser
 } = require("../controllers/userController");
 
+// Create User (optional: keep public or protect)
 router.post("/", createUser);
 
-router.get("/", getUsers);
+// Protected Routes
+router.get("/", authMiddleware, getUsers);
 
-router.put("/:id", updateUser);
+router.put("/:id", authMiddleware, updateUser);
 
-router.delete("/:id", deleteUser);
+router.delete("/:id", authMiddleware, deleteUser);
 
 module.exports = router;

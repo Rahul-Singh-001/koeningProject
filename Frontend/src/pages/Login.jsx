@@ -1,10 +1,11 @@
-import React, { useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import React, { useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import api from "../api/api";
 
 const Login = () => {
   const [formData, setFormData] = useState({
-    email: '',
-    password: ''
+    email: "",
+    password: "",
   });
 
   const [error, setError] = useState({});
@@ -24,17 +25,36 @@ const Login = () => {
     return errorMessage;
   };
 
-  const submitHandler = (event) => {
+  const submitHandler = async (event) => {
     event.preventDefault();
 
     const validErrors = validations();
 
     if (Object.keys(validErrors).length > 0) {
       setError(validErrors);
-    } else {
-      setError({});
+      return;
+    }
+
+    try {
+      const response = await api.post("/auth/login", {
+        email: formData.email,
+        password: formData.password,
+      });
+
+      localStorage.setItem(
+        "token",
+        response.data.token
+      );
+
       alert("Login Successful");
-      navigate('/home');
+
+      navigate("/home");
+
+    } catch (error) {
+      alert(
+        error.response?.data?.message ||
+        "Login Failed"
+      );
     }
   };
 
@@ -43,21 +63,25 @@ const Login = () => {
 
     setFormData({
       ...formData,
-      [name]: value
+      [name]: value,
     });
 
     setError({
       ...error,
-      [name]: ""
+      [name]: "",
     });
   };
 
   return (
     <div className="credentials-page">
       <h1>Login Page</h1>
-      <p className="subtitle">Welcome Back 👋</p>
+
+      <p className="subtitle">
+        Welcome Back 👋
+      </p>
 
       <form onSubmit={submitHandler}>
+
         <input
           type="email"
           name="email"
@@ -67,9 +91,13 @@ const Login = () => {
         />
 
         {error.email && (
-          <p style={{ color: "red" }}>{error.email}</p>
+          <p style={{ color: "red" }}>
+            {error.email}
+          </p>
         )}
+
         <br />
+
         <input
           type="password"
           name="password"
@@ -79,20 +107,25 @@ const Login = () => {
         />
 
         {error.password && (
-          <p style={{ color: "red" }}>{error.password}</p>
+          <p style={{ color: "red" }}>
+            {error.password}
+          </p>
         )}
+
         <br />
 
         <button type="submit">
           Login
         </button>
-        <p className="register-link">
-        Don't have an account?{" "}
-        <Link to="/register">Register</Link>
-      </p>
-      </form>
 
-      
+        <p className="register-link">
+          Don't have an account?{" "}
+          <Link to="/register">
+            Register
+          </Link>
+        </p>
+
+      </form>
     </div>
   );
 };

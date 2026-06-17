@@ -1,6 +1,6 @@
 import { useState } from "react";
-import axios from "../api/api";
-import { useNavigate } from "react-router-dom";
+import api from "../api/api";
+import { useNavigate, Link } from "react-router-dom";
 
 function Register() {
   const navigate = useNavigate();
@@ -9,59 +9,127 @@ function Register() {
     name: "",
     email: "",
     password: "",
+    role: "student",
   });
+
+  const [error, setError] = useState("");
 
   const submitHandler = async (e) => {
     e.preventDefault();
 
+    if (
+      !formData.name ||
+      !formData.email ||
+      !formData.password
+    ) {
+      setError("All fields are required");
+      return;
+    }
+
     try {
-      await axios.post("/users", formData);
+      await api.post(
+        "/auth/register",
+        formData
+      );
 
       alert("Registration Successful");
 
       navigate("/");
+
     } catch (err) {
-      alert(err.response?.data?.message);
+
+      setError(
+        err.response?.data?.message ||
+        "Registration Failed"
+      );
+
     }
   };
 
   return (
-    <form onSubmit={submitHandler}>
-      <input
-        type="text"
-        placeholder="Name"
-        onChange={(e) =>
-          setFormData({
-            ...formData,
-            name: e.target.value,
-          })
-        }
-      />
+    <div className="credentials-page">
 
-      <input
-        type="email"
-        placeholder="Email"
-        onChange={(e) =>
-          setFormData({
-            ...formData,
-            email: e.target.value,
-          })
-        }
-      />
+      <h1>Register</h1>
 
-      <input
-        type="password"
-        placeholder="Password"
-        onChange={(e) =>
-          setFormData({
-            ...formData,
-            password: e.target.value,
-          })
-        }
-      />
+      {error && (
+        <p style={{ color: "red" }}>
+          {error}
+        </p>
+      )}
 
-      <button>Register</button>
-    </form>
+      <form onSubmit={submitHandler}>
+
+        <input
+          type="text"
+          placeholder="Name"
+          value={formData.name}
+          onChange={(e) =>
+            setFormData({
+              ...formData,
+              name: e.target.value,
+            })
+          }
+        />
+
+        <input
+          type="email"
+          placeholder="Email"
+          value={formData.email}
+          onChange={(e) =>
+            setFormData({
+              ...formData,
+              email: e.target.value,
+            })
+          }
+        />
+
+        <input
+          type="password"
+          placeholder="Password"
+          value={formData.password}
+          onChange={(e) =>
+            setFormData({
+              ...formData,
+              password: e.target.value,
+            })
+          }
+        />
+
+        <select
+          value={formData.role}
+          onChange={(e) =>
+            setFormData({
+              ...formData,
+              role: e.target.value,
+            })
+          }
+        >
+          <option value="student">
+            Student
+          </option>
+
+          <option value="faculty">
+            Faculty
+          </option>
+
+          <option value="admin">
+            Admin
+          </option>
+        </select>
+
+        <button type="submit">
+          Register
+        </button>
+
+        <p>
+          Already have an account?{" "}
+          <Link to="/">
+            Login
+          </Link>
+        </p>
+
+      </form>
+    </div>
   );
 }
 
