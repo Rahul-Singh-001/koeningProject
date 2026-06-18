@@ -1,0 +1,37 @@
+version: "3.8"
+
+services:
+
+  mongo:
+    image: mongo
+    container_name: campusconnect-mongo
+
+    ports:
+      - "27017:27017"
+
+    volumes:
+      - mongo-data:/data/db
+
+  backend:
+    build: ./Backend
+
+    ports:
+      - "3000:3000"
+
+    depends_on:
+      - mongo
+
+    env_file:
+      - ./Backend/.env
+
+  frontend:
+    build: ./Frontend
+
+    ports:
+      - "5173:80"
+
+    depends_on:
+      - backend
+
+volumes:
+  mongo-data:
